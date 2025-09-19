@@ -34,6 +34,14 @@ Function Skip-Analysis {
     $skipreason = $null
     $skipreason = @()
 
+    # DEBUG: Log environment variables
+    Write-Output "DEBUG: SKIPHEVC = $env:SKIPHEVC"
+    Write-Output "DEBUG: SKIPAV1 = $env:SKIPAV1"
+    Write-Output "DEBUG: SKIPDOVI = $env:SKIPDOVI"
+    Write-Output "DEBUG: SKIPHDR = $env:SKIPHDR"
+    Write-Output "DEBUG: SKIPKBPSBITRATEMIN = $env:SKIPKBPSBITRATEMIN"
+    Write-Output "DEBUG: SKIPMINUTESMIN = $env:SKIPMINUTESMIN"
+
     # Strict Typing
     $env:SKIPAV1 = [string]$env:SKIPAV1
     $env:SKIPHEVC = [string]$env:SKIPHEVC
@@ -42,7 +50,9 @@ Function Skip-Analysis {
     $env:SKIPKBPSBITRATEMIN = [int]$env:SKIPKBPSBITRATEMIN
 
     # Skip matched codecs
+    Write-Output "DEBUG: Detecting codec for $video"
     $codec = ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $video
+    Write-Output "DEBUG: Detected codec: $codec"
     switch ($codec) {
         "av1" {
             if ($env:SKIPAV1 -eq 'true') {

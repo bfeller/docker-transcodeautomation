@@ -1,0 +1,7 @@
+FROM ghcr.io/thetaylorlee/docker-transcodeautomation:latest
+
+# Copy our modified functions
+COPY build/functions/Skip-Analysis.ps1 /docker-transcodeautomation/functions/Skip-Analysis.ps1
+
+# Set debug environment
+ENV DEBUG=true
