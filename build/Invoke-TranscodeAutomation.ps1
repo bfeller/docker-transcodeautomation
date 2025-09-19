@@ -96,6 +96,11 @@ if ($host.version.major -eq '7') {
                 ###The Move-FiletoMediaFolder function is run here as a part of the fix for issue #29 Having it run here ensures even if there are no files to transcode, the failed file move is processed during the next window.
                 Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource #Issue 29
                 Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                
+                # DEBUG: Add missing transcoding calls
+                Write-Output "DEBUG: Calling transcoding functions"
+                Invoke-ProcessShow -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                Invoke-ProcessMovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
                 # Update-Processed can only run after the all possible file handling delays have passed. This ensures that if a file name changed but still exists, other functions update the database first.
                 if ($null -eq $runthisonetimeonly) {
                     $runthisonetimeonly = $true
