@@ -24,8 +24,10 @@ function Start-TranscodeShows {
 
     #Used in debug logs
     Write-Output "info: Start-Transcode Start"
+    Write-Output "DEBUG: Start-TranscodeShows called with CRF=$crf, comment=$comment"
 
     if ($env:FFToolsSource -and $env:FFToolsTarget) {
+        Write-Output "DEBUG: FFToolsSource=$env:FFToolsSource, FFToolsTarget=$env:FFToolsTarget"
         #Change directory to the source folder
         Set-Location $env:FFToolsSource
         $CustomShowOptionsApplied = Test-Path /docker-transcodeautomation/data/showscustomoptions.ps1
@@ -33,7 +35,9 @@ function Start-TranscodeShows {
         [string[]]$ext = "*.mkv", "*.mp4"
         foreach ($extension in $ext) {
             $array = @(Get-ChildItem -Filter $extension)
+            Write-Output "DEBUG: Found $($array.Count) files with extension $extension"
             Foreach ($video in $array.Name) {
+                Write-Output "DEBUG: Processing file: $video"
                 Write-Output "[+] Info: Skip-Analysis Results"
                 $skipanalysis = Skip-Analysis -video $env:FFToolsSource$video
                 $skipanalysis | Select-Object bitrate, codec, minutes, skip, skipreason
