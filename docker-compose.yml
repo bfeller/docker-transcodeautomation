@@ -10,7 +10,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
       - STARTTIMEUTC=02:00
-      - ENDTIMEUTC=10:00
+      - ENDTIMEUTC=23:59
       - MEDIAMOVIEFOLDERS=/data/movies
       - MEDIASHOWFOLDERS=/data/tv
       - BACKUPPROCESSED=false
