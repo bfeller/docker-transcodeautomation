@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  transcodeautomation:
+    build:
+      context: https://github.com/bfeller/docker-transcodeautomation.git
+      dockerfile: Dockerfile.debug
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - STARTTIMEUTC=02:00
+      - ENDTIMEUTC=10:00
+      - MEDIAMOVIEFOLDERS=/data/movies
+      - MEDIASHOWFOLDERS=/data/tv
+      - BACKUPPROCESSED=false
+      - BACKUPRETENTION=14
+      - FFMPEG_HWACCEL=qsv
+      - FFMPEG_THREADS=8
+      - SKIPHEVC=true
+      - SKIPAV1=true
+      - SKIPKBPSBITRATEMIN=500
+      - SKIPMINUTESMIN=10
+      - SKIPDOVI=true
+      - SKIPHDR=false
+    volumes:
+      - type: bind
+        source: /DATA/AppData/transcodeautomation/data
+        target: /docker-transcodeautomation/data
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /mnt/SSD/transcoding
+        target: /docker-transcodeautomation/transcoding
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /mnt/MainStorage/movies
+        target: /data/movies
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /mnt/MainStorage/tv
+        target: /data/tv
+        bind:
+          create_host_path: true
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    labels:
+      - "com.docker.compose.project=transcodeautomation"
+      - "com.docker.compose.service=transcodeautomation"
