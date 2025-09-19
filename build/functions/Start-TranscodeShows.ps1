@@ -25,6 +25,11 @@ function Start-TranscodeShows {
     #Used in debug logs
     Write-Output "info: Start-Transcode Start"
     Write-Output "DEBUG: Start-TranscodeShows called with CRF=$crf, comment=$comment"
+    
+    # DEBUG: Clean up any leftover files
+    Write-Output "DEBUG: Cleaning up transcoding directory"
+    Remove-Item /docker-transcodeautomation/transcoding/* -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Output "DEBUG: Cleanup complete"
 
     if ($env:FFToolsSource -and $env:FFToolsTarget) {
         Write-Output "DEBUG: FFToolsSource=$env:FFToolsSource, FFToolsTarget=$env:FFToolsTarget"
